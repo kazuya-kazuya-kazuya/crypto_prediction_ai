@@ -1,18 +1,72 @@
-# Udemy Python Analysis Environment
+# 仮想通貨 1分後 予測ツール
 
-This repository contains a reproducible Python data analysis environment.
+CoinGecko API × ランダムフォレストで「1本後に上がるか下がるか」を予測する Streamlit アプリです。
 
-## Environment
+---
 
-- Python 3.11
-- pandas
-- numpy
-- matplotlib
-- scikit-learn
-- Jupyter
+## 起動手順（3ステップ）
 
-## Run
+### ステップ 1 — Python を確認
+```bash
+python --version
+# Python 3.9 以上であればOK
+```
 
-Open in VS Code and run:
+### ステップ 2 — ライブラリをインストール
+```bash
+pip install -r requirements.txt
+```
 
-Dev Containers: Reopen in Container
+### ステップ 3 — アプリを起動
+```bash
+streamlit run app.py
+```
+ブラウザが自動で開きます（http://localhost:8501）
+
+---
+
+## 使い方
+
+1. 左サイドバーで **通貨**（BTC / ETH / SOL など）を選ぶ
+2. **学習データ期間**（日数）をスライダーで調整
+3. **「予測を実行」** ボタンをクリック
+4. 予測結果・信頼度・チャートを確認する
+
+---
+
+## 機能一覧
+
+| 機能 | 内容 |
+|------|------|
+| リアルタイム価格 | CoinGecko API から現在価格・24H変動を取得 |
+| 機械学習予測 | ランダムフォレスト（15種類の特徴量）|
+| バックテスト精度 | 過去データでの正解率を表示 |
+| 信頼度スコア | 上昇・下落それぞれの確率を表示 |
+| 価格チャート | 終値・MA5・MA20 の折れ線グラフ |
+| RSI / MACD | サブチャートで表示 |
+| 特徴量の重要度 | どの指標が予測に効いているか棒グラフで表示 |
+| 自動更新 | 60秒ごとに自動再予測（オプション）|
+
+---
+
+## 通貨を変えたいとき
+
+サイドバーのドロップダウンから選ぶだけです。
+`app.py` の `COINS` 辞書に CoinGecko ID を追加すれば他の通貨にも対応できます。
+
+```python
+COINS = {
+    "Bitcoin (BTC)":  "bitcoin",
+    "Ethereum (ETH)": "ethereum",
+    "Cardano (ADA)":  "cardano",   # ← こんな感じで追加
+}
+```
+
+---
+
+## 注意事項
+
+- 予測は統計モデルによる **参考値** です
+- 短期予測の精度には本質的な限界があります
+- 投資判断はご自身の責任で行ってください
+- CoinGecko 無料 API にはレート制限があります（連続実行時は注意）
